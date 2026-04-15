@@ -8,9 +8,10 @@ Não é necessário usar termos técnicos neste momento.
 
 ## Minha leitura inicial
 
-*(Espaço reservado para o estudante preencher)*
+_(Espaço reservado para o estudante preencher)_
 
 Exemplo de entradas:
+
 - "A classe faz muita coisa ao mesmo tempo"
 - "Tem código de e-mail misturado com o cálculo de multa"
 - "O mesmo cálculo aparece duas vezes no código"
@@ -20,4 +21,6 @@ Exemplo de entradas:
 
 ## Revisão com vocabulário técnico
 
-*(Este espaço será preenchido após a Aula 4, quando os termos técnicos corretos forem aprendidos)*
+-
+
+_(Este espaço será preenchido após a Aula 4, quando os termos técnicos corretos forem aprendidos)_

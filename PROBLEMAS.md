@@ -8,14 +8,13 @@ Não é necessário usar termos técnicos neste momento.
 
 ## Minha leitura inicial
 
-_(Espaço reservado para o estudante preencher)_
-
-Exemplo de entradas:
-
-- "A classe faz muita coisa ao mesmo tempo"
-- "Tem código de e-mail misturado com o cálculo de multa"
-- "O mesmo cálculo aparece duas vezes no código"
-- "As listas de equipamentos estão fora da classe, soltas no arquivo"
+- O documento diz que o prazo minimo de emprestimo e 1 dia, mas o codigo aceita qualquer valor de dias (inclusive 0 ou negativo).
+- A documentacao fala em enviar notificacao por e-mail, mas o sistema so imprime mensagens com "[EMAIL]" na tela.
+- O sistema deveria ser facil de adaptar para novos tipos de equipamento, mas hoje precisa mexer em varios pontos diferentes para isso funcionar.
+- O codigo depende de listas globais que ficam soltas no arquivo inteiro, entao uma parte mexe no estado da outra sem controle.
+- As regras principais estao misturadas com entrada de usuario (input/menu), o que dificulta testar cada parte separadamente.
+- O calculo de multa aparece repetido em mais de um lugar; se corrigir em um ponto e esquecer outro, o sistema pode ficar incoerente.
+- O proprio projeto reconhece que nao ha testes automatizados, e isso bate com o repositorio atual: nao existe nenhuma bateria de testes para validar mudancas.
 
 ---
 

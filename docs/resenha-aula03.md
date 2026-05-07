@@ -15,7 +15,7 @@ Na prática, o diagrama de classes ajuda a decidir a decomposição da solução
 
 ### (c) Aplicação ao UC01
 
-No UC01, o texto de casos_de_uso.md diz apenas que o sistema pede dados, registra o empréstimo, marca indisponibilidade e notifica. Um diagrama de sequência revelaria quem faz cada passo. No projeto, eu esperaria algo como Atendente -> CLI -> serviço de empréstimo -> equipamento -> notificador. Isso obriga o design a explicitar métodos como buscar_equipamento, validar_disponibilidade, registrar_emprestimo, marcar_indisponivel e notificar_confirmacao. Ou seja, o caso de uso textual descreve o que acontece; a sequência mostra como os objetos colaboram para fazer acontecer.
+No UC01, o texto de casos_de_uso.md diz apenas que o sistema pede dados, registra o empréstimo, marca indisponibilidade e notifica. Um diagrama de sequência revela quem faz cada passo e em que ordem. No desenho final do projeto, o fluxo passa por Atendente -> CLI -> ServicoEmprestimo -> RepositorioEmprestimo -> Notificador. Isso obriga o design a explicitar mensagens como buscar_equipamento, salvar_emprestimo, marcar_indisponivel e notificar_emprestimo, além da criação do objeto Emprestimo com a data de devolução calculada. Ou seja, o caso de uso textual descreve o que acontece; a sequência mostra como os objetos colaboram para fazer acontecer.
 
 ## Questão 2 - Arquitetura, design e os princípios de decomposição
 
@@ -49,7 +49,7 @@ Para mim, a transparência da tabela DT01-DT07 revela um desenvolvedor mais madu
 
 ### (a) Prevenção de erros
 
-Em emprestimos.py, o sistema depende de chaves soltas, como equipamento["disponivel"] e emprestimo["data_devolucao"]. Isso deixa passar erros que uma classe reduziria. Se eu digitar uma chave errada, o problema só aparece em execução; se um campo faltar em algum dicionário, também; e nada impede misturar tipos inadequados, como guardar texto onde o código espera uma data. Com classes, o contrato fica mais explícito: Equipamento teria atributos esperados, Emprestimo teria campos com significado definido e ferramentas de análise acusariam usos inconsistentes mais cedo. O perfil do erro muda: sai um erro implícito e tardio; entra um erro mais localizado.
+Em emprestimos.py, o sistema depende de chaves soltas, como equipamento["disponivel"] e emprestimo["data_devolucao"]. Isso deixa passar erros que uma classe reduziria. Se alguém digitar equipamento["dispnoivel"], por exemplo, o problema só aparece em execução, com KeyError. Com uma dataclass como Equipamento, a forma equivalente, equipamento.dispnoivel, tende a ser apontada antes por ferramentas como Pyright ou pelo próprio editor. O mesmo vale para campos ausentes ou tipos inadequados, como guardar texto onde o código espera uma data. Com classes, o contrato fica mais explícito: Equipamento teria atributos esperados, Emprestimo teria campos com significado definido e ferramentas de análise acusariam usos inconsistentes mais cedo. O perfil do erro muda: sai um erro implícito e tardio; entra um erro mais localizado.
 
 ### (b) Capacidade de evolução
 

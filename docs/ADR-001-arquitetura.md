@@ -13,12 +13,12 @@ Ao mesmo tempo, o projeto continua sendo uma aplicacao de linha de comando simpl
 
 ## Opcoes consideradas
 
-| Criterio | Arquivo unico | Em camadas | MVC |
-|---|---|---|---|
-| Atende RNF03 (novo tipo sem modificar multiplos modulos)? | Nao | Sim | Parcial |
-| Atende RNF04 (testar regras sem estado externo)? | Nao | Sim | Parcial |
-| Adequado para CLI sem interface grafica? | Sim | Sim | Parcial |
-| Familiar para equipe iniciante? | Sim no curto prazo, mas escala mal | Sim | Parcial |
+| Criterio                                                  | Arquivo unico                      | Em camadas | MVC     |
+| --------------------------------------------------------- | ---------------------------------- | ---------- | ------- |
+| Atende RNF03 (novo tipo sem modificar multiplos modulos)? | Nao                                | Sim        | Parcial |
+| Atende RNF04 (testar regras sem estado externo)?          | Nao                                | Sim        | Parcial |
+| Adequado para CLI sem interface grafica?                  | Sim                                | Sim        | Parcial |
+| Familiar para equipe iniciante?                           | Sim no curto prazo, mas escala mal | Sim        | Parcial |
 
 - Arquivo unico: foi descartado porque repete o problema da v1.0. A interface, o estado e as regras continuam acoplados, entao mudar tipos de equipamento e testar regras isoladas segue caro.
 - Em camadas: separa responsabilidades sem introduzir estruturas desnecessarias para um sistema de CLI. Permite manter as regras puras no dominio e deixar entrada, saida e adaptadores fora dessa camada.

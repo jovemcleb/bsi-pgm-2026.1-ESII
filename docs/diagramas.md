@@ -19,6 +19,8 @@ Arquitetura de referência: ADR-001 (duas camadas — `cli/` e `negocio/`).
 
 ### UC01 — Registrar Empréstimo
 
+![alt text](image.png)
+
 ```mermaid
 sequenceDiagram
     actor Atendente
@@ -42,6 +44,8 @@ sequenceDiagram
 ```
 
 ### UC02 — Registrar Devolução
+
+![alt text](image-1.png)
 
 ```mermaid
 sequenceDiagram
@@ -68,6 +72,8 @@ sequenceDiagram
 ```
 
 ### UC03 — Listar Empréstimos em Atraso
+
+![alt text](image-2.png)
 
 ```mermaid
 sequenceDiagram

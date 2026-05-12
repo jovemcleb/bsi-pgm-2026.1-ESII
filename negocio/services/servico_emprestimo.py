@@ -1,3 +1,4 @@
+# ServicoEmprestimo: regras de negocio para emprestimos.
 import datetime
 from typing import List, Optional
 
@@ -7,24 +8,71 @@ from negocio.services.notificador import Notificador
 
 
 class ServicoEmprestimo:
-    def __init__(self, repositorio: RepositorioEmprestimo, notificador: Notificador):
-        self.repositorio = repositorio
-        self.notificador = notificador
+    def __init__(self):
+        self.repositorio = RepositorioEmprestimo()
+        self.notificador = Notificador()
 
     def registrar(self, equip_id: int, nome: str, email: str, dias: int) -> bool:
-        ...
+        equipamento = self.repositorio.buscar_equipamento(equip_id)
+        if equipamento is None or not equipamento.disponivel:
+            return False
+
+        data_emprestimo = datetime.date.today()
+        data_devolucao = data_emprestimo + datetime.timedelta(days=dias)
+        emprestimo = Emprestimo(
+            id=len(self.repositorio.listar_todos()) + 1,
+            equipamento_id=equip_id,
+            equipamento_nome=equipamento.nome,
+            tipo=equipamento.tipo,
+            usuario_nome=nome,
+            usuario_email=email,
+            data_emprestimo=data_emprestimo,
+            data_devolucao=data_devolucao,
+            devolvido=False,
+        )
+
+        self.repositorio.salvar_emprestimo(emprestimo)
+        self.repositorio.marcar_indisponivel(equip_id)
+        self.notificador.notificar_emprestimo(email, data_devolucao)
+        return True
 
     def devolver(self, emprestimo_id: int) -> Optional[float]:
-        ...
+        emprestimo = self.repositorio.buscar_emprestimo(emprestimo_id)
+        if emprestimo is None or emprestimo.devolvido:
+            return None
+
+        dias_atraso = self.calcular_atraso(emprestimo.data_devolucao)
+        multa = self.calcular_multa(dias_atraso, emprestimo.tipo)
+        self.repositorio.registrar_devolucao(emprestimo_id, emprestimo.data_devolucao)
+        self.repositorio.marcar_disponivel(emprestimo.equipamento_id)
+        self.notificador.notificar_devolucao(emprestimo.usuario_email, multa)
+        return multa
 
     def listar_atrasados(self) -> List[Emprestimo]:
-        ...
+        atrasados = []
+        for emprestimo in self.repositorio.listar_todos():
+            if emprestimo.devolvido:
+                continue
+            if self.verificar_atraso(emprestimo.data_devolucao):
+                dias_atraso = self.calcular_atraso(emprestimo.data_devolucao)
+                multa = self.calcular_multa(dias_atraso, emprestimo.tipo)
+                self.notificador.notificar_atraso(emprestimo.usuario_email, dias_atraso, multa)
+                atrasados.append(emprestimo)
+        return atrasados
 
     def calcular_atraso(self, data_devolucao: datetime.date) -> int:
-        ...
+        return (datetime.date.today() - data_devolucao).days
 
     def calcular_multa(self, dias_atraso: int, tipo_equipamento: str) -> float:
-        ...
+        multa = 0.0
+        if dias_atraso > 0:
+            if tipo_equipamento == "notebook":
+                multa = dias_atraso * 10.0
+            elif tipo_equipamento == "projetor":
+                multa = dias_atraso * 15.0
+            elif tipo_equipamento == "cabo":
+                multa = dias_atraso * 2.0
+        return multa
 
     def verificar_atraso(self, data_devolucao: datetime.date) -> bool:
-        ...
+        return data_devolucao < datetime.date.today()

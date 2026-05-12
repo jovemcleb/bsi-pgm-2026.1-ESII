@@ -20,6 +20,10 @@ Não é necessário usar termos técnicos neste momento.
 
 ## Revisão com vocabulário técnico
 
--
-
-_(Este espaço será preenchido após a Aula 4, quando os termos técnicos corretos forem aprendidos)_
+- Ausencia de validacao de regra de negocio: o prazo minimo de emprestimo nao e protegido por nenhuma verificacao no metodo registrar, entao uma restricao do dominio fica fora do codigo e pode ser violada com facilidade.
+- Alto acoplamento entre negocio e mecanismo de notificacao: o sistema afirma enviar e-mail, mas a implementacao mistura a regra de emprestimo com saidas em tela usando print, sem uma abstracao propria para notificacao.
+- Violacao do principio aberto/fechado e alto acoplamento com tipos concretos: para adicionar um novo tipo de equipamento e preciso alterar condicionais espalhadas pelo sistema, o que mostra que a politica de multa nao esta encapsulada.
+- Acoplamento por estado global compartilhado: a classe Sistema depende diretamente das listas globais equipamentos e emprestimos_registrados, sem ocultamento de informacao nem controle claro sobre quem pode alterar esse estado.
+- Baixa coesao e violacao de SRP: entrada de usuario, fluxo de menu e regras de negocio estao misturados no mesmo arquivo, o que junta responsabilidades de apresentacao e dominio em um unico modulo.
+- Duplicacao de regra de negocio: o calculo de multa aparece em mais de um metodo, criando multiplos pontos de mudanca e aumentando o risco de inconsistencias quando a regra evoluir.
+- Baixa testabilidade e risco maior de regressao: a ausencia de testes automatizados impede validar o comportamento das regras com seguranca, o que agrava os efeitos do alto acoplamento e da mistura de responsabilidades.

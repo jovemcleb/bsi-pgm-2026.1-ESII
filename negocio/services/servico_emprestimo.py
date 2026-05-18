@@ -1,10 +1,18 @@
 # ServicoEmprestimo: regras de negocio para emprestimos.
 import datetime
+from dataclasses import dataclass
 from typing import List, Optional
 
 from negocio.models import Emprestimo
 from negocio.repositories import RepositorioEmprestimo
 from negocio.services.notificador import Notificador
+
+
+@dataclass
+class ResumoAtraso:
+    emprestimo: Emprestimo
+    dias_atraso: int
+    multa: float
 
 
 class ServicoEmprestimo:
@@ -42,37 +50,38 @@ class ServicoEmprestimo:
             return None
 
         dias_atraso = self.calcular_atraso(emprestimo.data_devolucao)
-        multa = self.calcular_multa(dias_atraso, emprestimo.tipo)
+        multa = self.calcular_multa(dias_atraso, emprestimo.equipamento_id)
         self.repositorio.registrar_devolucao(emprestimo_id, emprestimo.data_devolucao)
         self.repositorio.marcar_disponivel(emprestimo.equipamento_id)
         self.notificador.notificar_devolucao(emprestimo.usuario_email, multa)
         return multa
 
-    def listar_atrasados(self) -> List[Emprestimo]:
+    def listar_atrasados(self) -> List[ResumoAtraso]:
         atrasados = []
         for emprestimo in self.repositorio.listar_todos():
             if emprestimo.devolvido:
                 continue
             if self.verificar_atraso(emprestimo.data_devolucao):
                 dias_atraso = self.calcular_atraso(emprestimo.data_devolucao)
-                multa = self.calcular_multa(dias_atraso, emprestimo.tipo)
+                multa = self.calcular_multa(dias_atraso, emprestimo.equipamento_id)
                 self.notificador.notificar_atraso(emprestimo.usuario_email, dias_atraso, multa)
-                atrasados.append(emprestimo)
+                atrasados.append(
+                    ResumoAtraso(
+                        emprestimo=emprestimo,
+                        dias_atraso=dias_atraso,
+                        multa=multa,
+                    )
+                )
         return atrasados
 
     def calcular_atraso(self, data_devolucao: datetime.date) -> int:
         return (datetime.date.today() - data_devolucao).days
 
-    def calcular_multa(self, dias_atraso: int, tipo_equipamento: str) -> float:
-        multa = 0.0
-        if dias_atraso > 0:
-            if tipo_equipamento == "notebook":
-                multa = dias_atraso * 10.0
-            elif tipo_equipamento == "projetor":
-                multa = dias_atraso * 15.0
-            elif tipo_equipamento == "cabo":
-                multa = dias_atraso * 2.0
-        return multa
+    def calcular_multa(self, dias_atraso: int, equipamento_id: int) -> float:
+        equipamento = self.repositorio.buscar_equipamento(equipamento_id)
+        if equipamento is None:
+            return 0.0
+        return equipamento.calcular_multa(dias_atraso)
 
     def verificar_atraso(self, data_devolucao: datetime.date) -> bool:
         return data_devolucao < datetime.date.today()

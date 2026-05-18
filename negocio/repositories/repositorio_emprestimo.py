@@ -2,15 +2,15 @@
 import datetime
 from typing import List, Optional
 
-from negocio.models import Emprestimo, Equipamento
+from negocio.models import CaboHDMI, Emprestimo, Equipamento, Notebook, Projetor
 
 
 class RepositorioEmprestimo:
     def __init__(self):
         self.equipamentos = [
-            Equipamento(id=1, nome="Notebook Dell", tipo="notebook", disponivel=True),
-            Equipamento(id=2, nome="Projetor Epson", tipo="projetor", disponivel=True),
-            Equipamento(id=3, nome="Cabo HDMI", tipo="cabo", disponivel=True),
+            Notebook(id=1, nome="Notebook Dell", disponivel=True),
+            Projetor(id=2, nome="Projetor Epson", disponivel=True),
+            CaboHDMI(id=3, nome="Cabo HDMI", disponivel=True),
         ]
         self.emprestimos_registrados: List[Emprestimo] = []
 

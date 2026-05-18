@@ -25,10 +25,8 @@ def main():
 				print(f"Devolução registrada. Multa: R${multa:.2f}")
 		elif op == "3":
 			atrasados = servico.listar_atrasados()
-			for emprestimo in atrasados:
-				atraso = servico.calcular_atraso(emprestimo.data_devolucao)
-				multa = servico.calcular_multa(atraso, emprestimo.tipo)
-				print(f"{emprestimo.usuario_nome} — {atraso} dias — R${multa:.2f}")
+			for atraso in atrasados:
+				print(f"{atraso.emprestimo.usuario_nome} — {atraso.dias_atraso} dias — R${atraso.multa:.2f}")
 		elif op == "0":
 			break
 

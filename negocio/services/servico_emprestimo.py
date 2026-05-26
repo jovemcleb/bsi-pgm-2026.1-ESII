@@ -16,9 +16,9 @@ class ResumoAtraso:
 
 
 class ServicoEmprestimo:
-    def __init__(self):
-        self.repositorio = RepositorioEmprestimo()
-        self.notificador = Notificador()
+    def __init__(self, repositorio: RepositorioEmprestimo, notificador: Notificador):
+        self.repositorio = repositorio
+        self.notificador = notificador
 
     def registrar(self, equip_id: int, nome: str, email: str, dias: int) -> bool:
         equipamento = self.repositorio.buscar_equipamento(equip_id)

@@ -1,9 +1,13 @@
 # main.py: interface CLI do sistema.
+from negocio.repositories import RepositorioEmprestimo
 from negocio.services import ServicoEmprestimo
+from negocio.services.notificador import Notificador
 
 
 def main():
-	servico = ServicoEmprestimo()
+	repositorio = RepositorioEmprestimo()
+	notificador = Notificador()
+	servico = ServicoEmprestimo(repositorio, notificador)
 
 	while True:
 		print("\n1-Registrar  2-Devolver  3-Atrasados  0-Sair")

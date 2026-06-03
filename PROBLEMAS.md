@@ -8,22 +8,22 @@ Não é necessário usar termos técnicos neste momento.
 
 ## Minha leitura inicial
 
-- O documento diz que o prazo minimo de emprestimo e 1 dia, mas o codigo aceita qualquer valor de dias (inclusive 0 ou negativo).
-- A documentacao fala em enviar notificacao por e-mail, mas o sistema so imprime mensagens com "[EMAIL]" na tela.
-- O sistema deveria ser facil de adaptar para novos tipos de equipamento, mas hoje precisa mexer em varios pontos diferentes para isso funcionar.
-- O codigo depende de listas globais que ficam soltas no arquivo inteiro, entao uma parte mexe no estado da outra sem controle.
-- As regras principais estao misturadas com entrada de usuario (input/menu), o que dificulta testar cada parte separadamente.
-- O calculo de multa aparece repetido em mais de um lugar; se corrigir em um ponto e esquecer outro, o sistema pode ficar incoerente.
-- O proprio projeto reconhece que nao ha testes automatizados, e isso bate com o repositorio atual: nao existe nenhuma bateria de testes para validar mudancas.
+- O documento diz que o prazo mínimo de empréstimo é 1 dia, mas o código aceita qualquer valor de dias (inclusive 0 ou negativo).
+- A documentação fala em enviar notificação por e-mail, mas o sistema só imprime mensagens com "[EMAIL]" na tela.
+- O sistema deveria ser fácil de adaptar para novos tipos de equipamento, mas hoje precisa mexer em vários pontos diferentes para isso funcionar.
+- O código depende de listas globais que ficam soltas no arquivo inteiro, então uma parte mexe no estado da outra sem controle.
+- As regras principais estão misturadas com entrada de usuário (input/menu), o que dificulta testar cada parte separadamente.
+- O cálculo de multa aparece repetido em mais de um lugar; se corrigir em um ponto e esquecer outro, o sistema pode ficar incoerente.
+- O próprio projeto reconhece que não há testes automatizados, e isso bate com o repositório atual: não existe nenhuma bateria de testes para validar mudanças.
 
 ---
 
 ## Revisão com vocabulário técnico
 
-- Ausencia de validacao de regra de negocio: o prazo minimo de emprestimo nao e protegido por nenhuma verificacao no metodo registrar, entao uma restricao do dominio fica fora do codigo e pode ser violada com facilidade.
-- Alto acoplamento entre negocio e mecanismo de notificacao: o sistema afirma enviar e-mail, mas a implementacao mistura a regra de emprestimo com saidas em tela usando print, sem uma abstracao propria para notificacao.
-- Violacao do principio aberto/fechado e alto acoplamento com tipos concretos: para adicionar um novo tipo de equipamento e preciso alterar condicionais espalhadas pelo sistema, o que mostra que a politica de multa nao esta encapsulada.
-- Acoplamento por estado global compartilhado: a classe Sistema depende diretamente das listas globais equipamentos e emprestimos_registrados, sem ocultamento de informacao nem controle claro sobre quem pode alterar esse estado.
-- Baixa coesao e violacao de SRP: entrada de usuario, fluxo de menu e regras de negocio estao misturados no mesmo arquivo, o que junta responsabilidades de apresentacao e dominio em um unico modulo.
-- Duplicacao de regra de negocio: o calculo de multa aparece em mais de um metodo, criando multiplos pontos de mudanca e aumentando o risco de inconsistencias quando a regra evoluir.
-- Baixa testabilidade e risco maior de regressao: a ausencia de testes automatizados impede validar o comportamento das regras com seguranca, o que agrava os efeitos do alto acoplamento e da mistura de responsabilidades.
+- Ausência de validação de regra de negócio: o prazo mínimo de empréstimo não é protegido por nenhuma verificação no método registrar, então uma restrição do domínio fica fora do código e pode ser violada com facilidade.
+- Alto acoplamento entre negócio e mecanismo de notificação: o sistema afirma enviar e-mail, mas a implementação mistura a regra de empréstimo com saídas em tela usando print, sem uma abstração própria para notificação.
+- Violação do princípio aberto/fechado e alto acoplamento com tipos concretos: para adicionar um novo tipo de equipamento é preciso alterar condicionais espalhadas pelo sistema, o que mostra que a política de multa não está encapsulada.
+- Acoplamento por estado global compartilhado: a classe Sistema depende diretamente das listas globais equipamentos e emprestimos_registrados, sem ocultamento de informação nem controle claro sobre quem pode alterar esse estado.
+- Baixa coesão e violação de SRP: entrada de usuário, fluxo de menu e regras de negócio estão misturados no mesmo arquivo, o que junta responsabilidades de apresentação e domínio em um único módulo.
+- Duplicação de regra de negócio: o cálculo de multa aparece em mais de um método, criando múltiplos pontos de mudança e aumentando o risco de inconsistências quando a regra evoluir.
+- Baixa testabilidade e risco maior de regressão: a ausência de testes automatizados impede validar o comportamento das regras com segurança, o que agrava os efeitos do alto acoplamento e da mistura de responsabilidades.

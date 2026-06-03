@@ -1,5 +1,8 @@
 # ADR-001 - Arquitetura da v2.0
 
+**Status:** Accepted
+**Data:** 2026-04-22
+
 ## Contexto
 
 A versao 1.0 concentra menu, regras de negocio, estado em memoria e notificacoes no mesmo arquivo, o que ja aparece como problema em [PROBLEMAS.md](../PROBLEMAS.md) e no codigo legado em [emprestimos.py](../emprestimos.py).
@@ -26,23 +29,25 @@ Ao mesmo tempo, o projeto continua sendo uma aplicacao de linha de comando simpl
 
 ## Decisao
 
-Adotar arquitetura em camadas com duas camadas para a v2.0.
+Adotar arquitetura em camadas com separacao por pacotes para a v2.0.
 
 As camadas definidas para o repositorio sao:
 
-- cli/: interacao com a CLI, menu textual, leitura de entradas e exibicao de mensagens.
-- negocio/: regras de negocio do sistema, validacoes, calculo de multas, controle de emprestimos e organizacao do estado em memoria.
+- main.py: ponto de entrada da aplicacao, menu textual, leitura de entradas e exibicao de mensagens.
+- models/: tipos do dominio, como Equipamento e Emprestimo.
+- repositories/: contratos e implementacoes de persistencia, escondendo o armazenamento em memoria.
+- services/: casos de uso, regras de negocio e notificacoes.
 
-O arquivo main.py sera o ponto de entrada da aplicacao e, mais adiante, chamara a camada cli.
+O arquivo main.py sera o ponto de composicao da aplicacao, criando as implementacoes concretas e injetando essas dependencias em ServicoEmprestimo.
 
-Para atender RNF03, a variacao por tipo de equipamento deve ficar centralizada em um unico modulo da camada de negocio, evitando espalhar ifs por diferentes partes do sistema.
+Para atender RNF03, a variacao por tipo de equipamento deve ficar centralizada em models/, evitando espalhar ifs por diferentes partes do sistema.
 
-Para atender RNF04, a camada cli apenas coleta entradas e mostra saidas, enquanto a camada de negocio permanece testavel sem input(), print() ou dependencia de interface.
+Para atender RNF04, ServicoEmprestimo depende das abstracoes IRepositorioEmprestimo e INotificador, o que permite testar as regras com fakes ou mocks sem input(), print() ou estado externo.
 
 ## Consequencias
 
 - As regras de negocio passam a poder ser testadas sem input(), print() ou listas globais compartilhadas.
-- A CLI deixa de decidir regras; ela apenas coleta dados e mostra resultados.
-- A adicao de novos tipos de equipamento fica concentrada na camada de negocio, reduzindo o impacto de manutencao.
+- A CLI deixa de decidir regras; main.py apenas coleta dados, mostra resultados e monta as dependencias.
+- A adicao de novos tipos de equipamento fica concentrada em models/, reduzindo o impacto de manutencao.
 - O projeto ganha uma separacao simples o bastante para a equipe iniciante, sem a cerimonia extra de uma decomposicao mais detalhada.
 - Durante a transicao, [emprestimos.py](../emprestimos.py) permanece intacto como referencia do legado enquanto a v2.0 nasce ao lado dele.

@@ -29,7 +29,7 @@ O ocultamento de informação reduz acoplamento porque o cliente deixa de depend
 
 ### (c) Aplicação ao projeto v2.0
 
-Seguindo o ADR-001 e o Cap. 7, a arquitetura macro da v2.0 continua em cli/ e negocio/. Dentro de negocio/, eu adotaria uma decomposição interna mais próxima da solução-guia porque ela passa melhor no critério de responsabilidade única. Em models/, deixaria Equipamento e Emprestimo como tipos do domínio, com alta coesão e campos explícitos, sem lógica de interface. Em services/, ServicoEmprestimo concentraria registrar, devolver e listar atrasados, porque os três casos de uso pertencem ao mesmo fluxo de negócio; e Notificador ficaria separado, pois mudar o canal de aviso não deve alterar a regra de empréstimo. Em repositories/, RepositorioEmprestimo esconderia o armazenamento e reduziria o acoplamento do serviço com listas ou banco. Em main.py, ficaria só a CLI.
+Seguindo o ADR-001 e o Cap. 7, a arquitetura macro da v2.0 fica separada em main.py, models/, services/ e repositories/. Eu adotaria essa decomposição porque ela passa melhor no critério de responsabilidade única. Em models/, deixaria Equipamento e Emprestimo como tipos do domínio, com alta coesão e campos explícitos, sem lógica de interface. Em services/, ServicoEmprestimo concentraria registrar, devolver e listar atrasados, porque os três casos de uso pertencem ao mesmo fluxo de negócio; e Notificador ficaria separado, pois mudar o canal de aviso não deve alterar a regra de empréstimo. Em repositories/, RepositorioEmprestimo esconderia o armazenamento e reduziria o acoplamento do serviço com listas ou banco. Em main.py, ficaria só a CLI e a montagem das dependências.
 
 ## Questão 3 - Crítica fundamentada à documentação do sistema legado
 

@@ -1,7 +1,6 @@
 # main.py: interface CLI do sistema.
-from negocio.repositories import RepositorioEmprestimo
-from negocio.services import ServicoEmprestimo
-from negocio.services.notificador import Notificador
+from repositories import RepositorioEmprestimo
+from services import Notificador, ServicoEmprestimo
 
 
 def main():

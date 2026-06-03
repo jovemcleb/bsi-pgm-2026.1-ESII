@@ -1,8 +1,10 @@
 # Notificador: envio de mensagens de notificacao.
 import datetime
 
+from services.interfaces import INotificador
 
-class Notificador:
+
+class Notificador(INotificador):
     def notificar_emprestimo(self, email: str, data_devolucao: datetime.date) -> None:
         print(f"[EMAIL] {email} — empréstimo até {data_devolucao}")
 

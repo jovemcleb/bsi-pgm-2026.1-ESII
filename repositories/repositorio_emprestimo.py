@@ -2,10 +2,11 @@
 import datetime
 from typing import List, Optional
 
-from negocio.models import CaboHDMI, Emprestimo, Equipamento, Notebook, Projetor
+from models import CaboHDMI, Emprestimo, Equipamento, Notebook, Projetor
+from repositories.interfaces import IRepositorioEmprestimo
 
 
-class RepositorioEmprestimo:
+class RepositorioEmprestimo(IRepositorioEmprestimo):
     def __init__(self):
         self.equipamentos = [
             Notebook(id=1, nome="Notebook Dell", disponivel=True),

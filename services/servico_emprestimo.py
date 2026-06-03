@@ -3,9 +3,9 @@ import datetime
 from dataclasses import dataclass
 from typing import List, Optional
 
-from negocio.models import Emprestimo
-from negocio.repositories import RepositorioEmprestimo
-from negocio.services.notificador import Notificador
+from models import Emprestimo
+from repositories.interfaces import IRepositorioEmprestimo
+from services.interfaces import INotificador
 
 
 @dataclass
@@ -16,7 +16,7 @@ class ResumoAtraso:
 
 
 class ServicoEmprestimo:
-    def __init__(self, repositorio: RepositorioEmprestimo, notificador: Notificador):
+    def __init__(self, repositorio: IRepositorioEmprestimo, notificador: INotificador):
         self.repositorio = repositorio
         self.notificador = notificador
 

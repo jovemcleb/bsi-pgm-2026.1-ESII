@@ -1,1 +1,2 @@
+from .interfaces import IRepositorioEmprestimo
 from .repositorio_emprestimo import RepositorioEmprestimo

@@ -45,3 +45,13 @@ def test_bloqueia_terceiro_emprestimo_em_aberto_do_mesmo_usuario():
     registrado = servico.registrar(3, "Ana", "ana@email.com", 2)
 
     assert registrado is False
+
+
+def test_permite_segundo_emprestimo_quando_usuario_tem_apenas_um_em_aberto():
+    repositorio = RepositorioEmprestimo()
+    servico = ServicoEmprestimo(repositorio, NotificadorFalso())
+    adicionar_emprestimo(repositorio, 1, 1, "ana@email.com")
+
+    registrado = servico.registrar(2, "Ana", "ana@email.com", 2)
+
+    assert registrado is True

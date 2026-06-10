@@ -16,17 +16,14 @@ class ResumoAtraso:
 
 
 class ServicoEmprestimo:
+    LIMITE_EMPRESTIMOS_EM_ABERTO = 2
+
     def __init__(self, repositorio: RepositorioEmprestimo, notificador: Notificador):
         self.repositorio = repositorio
         self.notificador = notificador
 
     def registrar(self, equip_id: int, nome: str, email: str, dias: int) -> bool:
-        emprestimos_do_usuario = 0
-        for emprestimo in self.repositorio.listar_todos():
-            if emprestimo.usuario_email == email:
-                emprestimos_do_usuario += 1
-
-        if emprestimos_do_usuario >= 2:
+        if self.contar_emprestimos_em_aberto_do_usuario(email) >= self.LIMITE_EMPRESTIMOS_EM_ABERTO:
             return False
 
         equipamento = self.repositorio.buscar_equipamento(equip_id)
@@ -51,6 +48,13 @@ class ServicoEmprestimo:
         self.repositorio.marcar_indisponivel(equip_id)
         self.notificador.notificar_emprestimo(email, data_devolucao)
         return True
+
+    def contar_emprestimos_em_aberto_do_usuario(self, email: str) -> int:
+        emprestimos_em_aberto = 0
+        for emprestimo in self.repositorio.listar_todos():
+            if emprestimo.usuario_email == email and not emprestimo.devolvido:
+                emprestimos_em_aberto += 1
+        return emprestimos_em_aberto
 
     def devolver(self, emprestimo_id: int) -> Optional[float]:
         emprestimo = self.repositorio.buscar_emprestimo(emprestimo_id)

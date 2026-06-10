@@ -21,6 +21,10 @@ class ServicoEmprestimo:
         self.notificador = notificador
 
     def registrar(self, equip_id: int, nome: str, email: str, dias: int) -> bool:
+        for emprestimo in self.repositorio.listar_todos():
+            if emprestimo.usuario_email == email and not emprestimo.devolvido:
+                return False
+
         equipamento = self.repositorio.buscar_equipamento(equip_id)
         if equipamento is None or not equipamento.disponivel:
             return False
